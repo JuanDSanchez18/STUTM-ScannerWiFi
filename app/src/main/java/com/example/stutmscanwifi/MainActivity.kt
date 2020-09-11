@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val runningQOrLater =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
     private lateinit var wifiManager: WifiManager
 
@@ -107,12 +107,12 @@ class MainActivity : AppCompatActivity() {
     private fun scanSuccess() {
         val results = wifiManager.scanResults
         textView.text = ""
-        textView.append("Number of wifi channels: ")
+        textView.append("Number of AP: ")
         textView.append(results.size.toString() + "\n")
         //... use new scan results ...
         for (result in results){
             //Toast.makeText(applicationContext, result.SSID, Toast.LENGTH_SHORT).show()
-            textView.append(result.SSID + " " + result.level + " dBm " + result.BSSID+ result.capabilities+ "\n")
+            textView.append(result.SSID + " " + result.level + " dBm " + " " + result.BSSID+ "\n")
 
         }
 
