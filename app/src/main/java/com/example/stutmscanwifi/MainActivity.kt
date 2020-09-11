@@ -112,19 +112,10 @@ class MainActivity : AppCompatActivity() {
         //... use new scan results ...
         for (result in results){
             //Toast.makeText(applicationContext, result.SSID, Toast.LENGTH_SHORT).show()
-            textView.append(result.SSID + " " + result.level + " dBm " + rssiLevel(result.level) + "\n")
+            textView.append(result.SSID + " " + result.level + " dBm " + result.BSSID+ result.capabilities+ "\n")
 
         }
 
     }
 
-    private fun rssiLevel(rssiData : Int) : String {
-        return when (rssiData) {
-            in -50..0 -> "Excellent signal"
-            in -70..-50 -> "Good signal"
-            in -80..-70 -> "Fair signal"
-            in -100..-80 -> "Weak signal"
-            else -> "NO SIGNAL"
-        }
-    }
 }
