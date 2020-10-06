@@ -12,6 +12,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
     private lateinit var wifiManager: WifiManager
+
+    private var timer = Timer()
 
     private val wifiScanReceiver = object : BroadcastReceiver() {
 
@@ -45,9 +48,18 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        scanBtn.setOnClickListener{scanWifiNetworks()}
+        scanBtn.setOnClickListener{
+            timer = Timer()
+            corutineScanWifi()
 
+        }
+        stopScanBtn.setOnClickListener{
+            timer.cancel()
+            textView.text = ""
+            textView.append("Finish Scan")
+        }
     }
+
 
     private fun checkPermissions(): Boolean {
         if (runningQOrLater ) {
@@ -82,6 +94,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*private fun corutineScanWifi() {
+
+        val timer = object: CountDownTimer(300000, 15000) {
+            override fun onTick(millisUntilFinished: Long) {
+                // do something
+                scanWifiNetworks()
+            }
+            override fun onFinish() {
+                // do something
+                textView.text = ""
+                textView.append("Finish 5 minutes")
+            }
+        }
+        timer.start()
+    }*/
+
+    private fun corutineScanWifi() {
+
+        //Set the schedule function
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    // Magic here
+                    scanWifiNetworks()
+                }
+            },
+            0, 15000
+        )
+    }
+
+
     private fun scanWifiNetworks() {
 //https://github.com/shmulman/WifiSense_v5/blob/master/app/src/main/java/il/co/shmulman/www/wifisense_v5/MainActivity.kt
         val intentFilter = IntentFilter()
@@ -112,7 +155,7 @@ class MainActivity : AppCompatActivity() {
         //... use new scan results ...
         for (result in results){
             //Toast.makeText(applicationContext, result.SSID, Toast.LENGTH_SHORT).show()
-            textView.append(result.SSID + " " + result.level + " dBm " + " " + result.BSSID+ "\n")
+            textView.append(result.SSID + " " + result.level + " dBm " + " " + result.BSSID + "\n")
 
         }
 

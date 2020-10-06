@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">STUTM scan WiFi</string>
-    <string name="StartScan">scan</string>
+    <string name="StartScan">Scan</string>
     <string name="ScanList"></string>
+    <string name="StopScan">Stop Scan</string>
 
 </resources>
