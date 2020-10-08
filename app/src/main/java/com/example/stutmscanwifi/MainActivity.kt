@@ -44,19 +44,18 @@ class MainActivity : AppCompatActivity() {
         wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         if (checkPermissions()) {
-            textView.append("Check permissions")
+            scanReport.append("Check permissions")
 
         }
 
         scanBtn.setOnClickListener{
-            timer = Timer()
             corutineScanWifi()
 
         }
         stopScanBtn.setOnClickListener{
             timer.cancel()
-            textView.text = ""
-            textView.append("Finish Scan")
+            scanReport.text = ""
+            scanReport.append("Finish Scan")
         }
     }
 
@@ -103,8 +102,8 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onFinish() {
                 // do something
-                textView.text = ""
-                textView.append("Finish 5 minutes")
+                scanReport.text = ""
+                scanReport.append("Finish 5 minutes")
             }
         }
         timer.start()
@@ -112,6 +111,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun corutineScanWifi() {
 
+        timer = Timer()
         //Set the schedule function
         timer.scheduleAtFixedRate(
             object : TimerTask() {
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                     scanWifiNetworks()
                 }
             },
-            0, 15000
+            0, 20000
         )
     }
 
@@ -138,26 +138,25 @@ class MainActivity : AppCompatActivity() {
             scanFailure()
         }
 
-
     }
 
     private fun scanFailure() {
-        textView.text = ""
-        textView.append("Scan fail")
+        scanReport.text = ""
+        scanReport.append("Scan fail")
 
     }
 
     private fun scanSuccess() {
         val results = wifiManager.scanResults
-        textView.text = ""
-        textView.append("Number of AP: ")
-        textView.append(results.size.toString() + "\n")
+        scanReport.text = "Scan WiFi success" + "\n"
+        scanReport.append("Number of access point: ")
+        scanReport.append(results.size.toString() + "\n")
         //... use new scan results ...
-        for (result in results){
+        /*for (result in results){
             //Toast.makeText(applicationContext, result.SSID, Toast.LENGTH_SHORT).show()
-            textView.append(result.SSID + " " + result.level + " dBm " + " " + result.BSSID + "\n")
+            scanReport.append(result.SSID + " " + result.level + " dBm " + " " + result.BSSID + "\n")
 
-        }
+        }*/
 
     }
 
